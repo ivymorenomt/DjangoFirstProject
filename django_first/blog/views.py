@@ -2,6 +2,7 @@
 #from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Post
+from django.views.generic import ListView
 
 #import Post from models, it is our real database
 
@@ -30,6 +31,12 @@ def home(request):
 			'posts': Post.objects.all()
 		}
 	return render(request, 'blog/home.html', context)
+
+class PostListView(ListView):
+	model = Post
+	template_name = 'blog/home.html' # <app>/<model>_<viewtype>.html
+	context_object_name = 'posts' #call the context in the hometemplate
+	ordering = ['-date_posted']
 
 def about(request):
 	return render(request, 'blog/about.html', {'title':'About'})
